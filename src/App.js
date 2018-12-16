@@ -25,13 +25,13 @@ class App extends Component {
             <React.Fragment>
                 <LoaderContext.Provider
                     value={{isVisible: this.state.loaderIsVisible, setVisibility: this.setVisibility}}>
-<Loader/>
-<CssBaseline/>
-<Home/>
-</LoaderContext.Provider>
-</React.Fragment>
-);
-}
+                    <Loader/>
+                    <CssBaseline/>
+                    <Home/>
+                </LoaderContext.Provider>
+            </React.Fragment>
+        );
+    }
 }
 
 export default App;

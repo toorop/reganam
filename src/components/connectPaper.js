@@ -39,12 +39,9 @@ const styles = theme => ({
 })
 
 
-
-
-
 //const Connect = props => {
 class Connect extends React.Component {
-    constructor(props){
+    constructor(props) {
         super(props)
         this.state = {
             region: 'ovh-eu',
@@ -59,7 +56,7 @@ class Connect extends React.Component {
     }
     handleClick = (setVisibility) => {
         setVisibility(true)
-        setTimeout(() => setVisibility(false), 1000 )
+        setTimeout(() => setVisibility(false), 1000)
     }
 
     render() {
@@ -93,7 +90,8 @@ class Connect extends React.Component {
                     <FormControl className={classes.formControl} fullWidth>
                         <LoaderContext.Consumer>
                             {({setVisibility}) => (
-                                <Button variant="contained" color={"primary"} onClick={()=>this.handleClick(setVisibility)}>
+                                <Button variant="contained" color={"primary"}
+                                        onClick={() => this.handleClick(setVisibility)}>
                                     SIGN IN
                                 </Button>
                             )}

@@ -12,8 +12,7 @@ import Paper from '@material-ui/core/Paper'
 import Select from '@material-ui/core/Select'
 import Typography from '@material-ui/core/Typography'
 
-import Loader from '../components/Loader'
-
+import {LoaderContext} from '../contexts/LoaderContext'
 
 const styles = theme => ({
     paper: {
@@ -40,29 +39,33 @@ const styles = theme => ({
 })
 
 
+
+
+
 //const Connect = props => {
 class Connect extends React.Component {
-    state = {
-        region: 'ovh-eu',
-        isLoading: false
+    constructor(props){
+        super(props)
+        this.state = {
+            region: 'ovh-eu',
+        }
     }
+
 
     handleChange = (e) => {
         this.setState({
             region: e.target.value,
         })
     }
-    handleClick = () => {
-        this.setState(
-            {isLoading: true}
-        )
+    handleClick = (setVisibility) => {
+        setVisibility(true)
+        setTimeout(() => setVisibility(false), 1000 )
     }
 
     render() {
         const {classes} = this.props
         return (
             <React.Fragment>
-                <Loader visible={this.state.isLoading}/>
                 <Paper className={classes.paper} elevation={1}>
                     <Avatar className={classes.avatar}>
                         <LockIcon/>
@@ -88,9 +91,13 @@ class Connect extends React.Component {
                         </Select>
                     </FormControl>
                     <FormControl className={classes.formControl} fullWidth>
-                        <Button variant="contained"  color={"primary"} onClick={this.handleClick}>
-                            SIGN IN
-                        </Button>
+                        <LoaderContext.Consumer>
+                            {({setVisibility}) => (
+                                <Button variant="contained" color={"primary"} onClick={()=>this.handleClick(setVisibility)}>
+                                    SIGN IN
+                                </Button>
+                            )}
+                        </LoaderContext.Consumer>
                     </FormControl>
                 </Paper>
             </React.Fragment>
@@ -101,5 +108,7 @@ class Connect extends React.Component {
 Connect.propTypes = {
     classes: PropTypes.object.isRequired,
 }
+
+//Connect.contextType = LoaderContext
 
 export default withStyles(styles)(Connect)

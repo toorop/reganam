@@ -66,7 +66,7 @@ const getIcon= (level) => {
 const Snackbar = (props) => {
     const handleClose = () => props.hideSnackbar()
     const {classes, level} = props
-    const Icon = getIcon()
+    const Icon = getIcon(level)
     return (
         <div>
             <SnackbarOri

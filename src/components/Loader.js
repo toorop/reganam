@@ -1,7 +1,8 @@
 import React from 'react'
 import {connect} from 'react-redux'
 import {withStyles} from '@material-ui/core/styles'
-import CircularProgress from '@material-ui/core/CircularProgress'
+import LinearProgress from '@material-ui/core/LinearProgress'
+import Grid from '@material-ui/core/Grid';
 
 const styles = theme => ({
     loader: {
@@ -10,40 +11,57 @@ const styles = theme => ({
         right: '0',
         bottom: '0',
         left: '0',
-        opacity: '0.5',
+        opacity: '0.7',
         backgroundColor: 'white',
         zIndex: '666',
     },
-    progress: {
+    content: {
         position: 'absolute',
-        top: '0',
-        right: '0',
-        bottom: '0',
-        left: '0',
-        margin: 'auto',
-        zIndex: '667'
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        width: '100%',
+        height: '100vh',
+        zIndex: '667',
+        textAlign: 'center',
+    },
+    msgBox: {
+        margin: theme.spacing.unit * 1,
+        [theme.breakpoints.up(400)]: {
+            width: 400,
+            marginLeft: 'auto',
+            marginRight: 'auto',
+        },
+        textAlign: 'left'
+    },
+    console: {
+        whiteSpace: 'pre-wrap'
     }
 
 })
 
 const mapStateToProps = (state) => {
     return {
-        isVisible: state.loaderIsVisible
+        isVisible: state.loaderIsVisible,
+        msg: state.loaderMessage
     }
 }
 
-// todo to const
-class Loader extends React.Component {
-    render() {
-        const {classes} = this.props
-        if (!this.props.isVisible) return null
-        return (
-            <React.Fragment>
-                <div className={classes.loader}></div>
-                <CircularProgress className={classes.progress} size={80} thickness={5} disableShrink={true}/>
-            </React.Fragment>
-        )
-    }
+const Loader = (props) => {
+    if (!props.isVisible) return null
+    const {classes} = props
+    return (
+        <React.Fragment>
+            <div className={classes.loader}></div>
+            <div className={classes.content}>
+                <Grid container wrap='nowrap'>
+                    <Grid item xs={12} lg={6} className={classes.msgBox} >
+                        <LinearProgress />
+                        <pre className={classes.console}>{props.msg}</pre>
+                    </Grid>
+                </Grid>
+            </div>
+        </React.Fragment>
+    )
 }
-
 export default connect(mapStateToProps)(withStyles(styles)(Loader))

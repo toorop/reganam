@@ -59,8 +59,9 @@ class Connect extends React.Component {
         })
     }
     handleClick = () => {
-        this.props.showLoader()
-        setTimeout(() => this.props.hideLoader(), 1000)
+        this.props.showLoader('Requesting OVH for a "credentialToken"')
+        setTimeout(() => this.props.showLoader('Hang your belt, you will be redirected to OVH to proceed authentication 🚀'), 3000)
+        setTimeout(() => this.props.hideLoader(), 5000)
     }
 
     render() {

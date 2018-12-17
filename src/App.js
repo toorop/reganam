@@ -1,6 +1,8 @@
 import React, {Component} from 'react'
 import CssBaseline from '@material-ui/core/CssBaseline'
-import {LoaderContext} from './contexts/LoaderContext'
+import {Provider} from 'react-redux'
+
+import store from './redux/store'
 
 import Home from '../src/containers/Home'
 
@@ -22,14 +24,12 @@ class App extends Component {
 
     render() {
         return (
-            <React.Fragment>
-                <LoaderContext.Provider
-                    value={{isVisible: this.state.loaderIsVisible, setVisibility: this.setVisibility}}>
-                    <Loader/>
-                    <CssBaseline/>
-                    <Home/>
-                </LoaderContext.Provider>
-            </React.Fragment>
+            <Provider store={store}>
+                <Loader/>
+                <CssBaseline/>
+                <Home/>
+            </Provider>
+
         );
     }
 }

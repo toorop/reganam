@@ -1,10 +1,7 @@
 import React from 'react'
-
+import {connect} from 'react-redux'
 import {withStyles} from '@material-ui/core/styles'
 import CircularProgress from '@material-ui/core/CircularProgress'
-
-import {LoaderContext} from '../contexts/LoaderContext'
-
 
 const styles = theme => ({
     loader: {
@@ -29,36 +26,24 @@ const styles = theme => ({
 
 })
 
+const mapStateToProps = (state) => {
+    return {
+        isVisible: state.loaderIsVisible
+    }
+}
 
+// todo to const
 class Loader extends React.Component {
     render() {
         const {classes} = this.props
-        let isVisible = this.context.isVisible
-        if (!isVisible) return null
+        if (!this.props.isVisible) return null
         return (
             <React.Fragment>
-                <div className={classes.loader}> </div>
+                <div className={classes.loader}></div>
                 <CircularProgress className={classes.progress} size={80} thickness={5} disableShrink={true}/>
             </React.Fragment>
         )
     }
 }
-Loader.contextType = LoaderContext
-export default withStyles(styles)(Loader)
 
-
-/*
-const Loader2 = (props) => {
-    const {visible} = props
-    const {classes} = props
-    if (!visible) return null
-    return (
-        <React.Fragment>
-            <div className={classes.loader}></div>
-            <CircularProgress className={classes.progress} size={80} thickness={5} disableShrink={true}/>
-        </React.Fragment>
-    )
-}
-*/
-
-
+export default connect(mapStateToProps)(withStyles(styles)(Loader))

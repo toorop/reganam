@@ -1,7 +1,9 @@
 import React from 'react'
+import { connect } from 'react-redux'
 import PropTypes from 'prop-types';
 import {withStyles} from '@material-ui/core/styles';
 
+import {showLoader, hideLoader} from "../redux/actions"
 
 import Avatar from '@material-ui/core/Avatar'
 import Button from "@material-ui/core/Button/Button"
@@ -11,8 +13,6 @@ import LockIcon from '@material-ui/icons/LockOutlined'
 import Paper from '@material-ui/core/Paper'
 import Select from '@material-ui/core/Select'
 import Typography from '@material-ui/core/Typography'
-
-import {LoaderContext} from '../contexts/LoaderContext'
 
 const styles = theme => ({
     paper: {
@@ -39,6 +39,11 @@ const styles = theme => ({
 })
 
 
+const mapDispatchToProps = {
+    showLoader,
+    hideLoader
+}
+
 //const Connect = props => {
 class Connect extends React.Component {
     constructor(props) {
@@ -48,15 +53,14 @@ class Connect extends React.Component {
         }
     }
 
-
     handleChange = (e) => {
         this.setState({
             region: e.target.value,
         })
     }
-    handleClick = (setVisibility) => {
-        setVisibility(true)
-        setTimeout(() => setVisibility(false), 1000)
+    handleClick = () => {
+        this.props.showLoader()
+        setTimeout(() => this.props.hideLoader(), 1000)
     }
 
     render() {
@@ -88,14 +92,10 @@ class Connect extends React.Component {
                         </Select>
                     </FormControl>
                     <FormControl className={classes.formControl} fullWidth>
-                        <LoaderContext.Consumer>
-                            {({setVisibility}) => (
-                                <Button variant="contained" color={"primary"}
-                                        onClick={() => this.handleClick(setVisibility)}>
-                                    SIGN IN
-                                </Button>
-                            )}
-                        </LoaderContext.Consumer>
+                        <Button variant="contained" color={"primary"}
+                                onClick={this.handleClick}>
+                            SIGN IN
+                        </Button>
                     </FormControl>
                 </Paper>
             </React.Fragment>
@@ -109,4 +109,4 @@ Connect.propTypes = {
 
 //Connect.contextType = LoaderContext
 
-export default withStyles(styles)(Connect)
+export default connect(null, mapDispatchToProps)(withStyles(styles)(Connect))

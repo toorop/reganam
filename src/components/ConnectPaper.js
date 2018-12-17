@@ -14,6 +14,9 @@ import Paper from '@material-ui/core/Paper'
 import Select from '@material-ui/core/Select'
 import Typography from '@material-ui/core/Typography'
 
+
+import {getNewClientToken} from '../ovh/auth'
+
 const styles = theme => ({
     paper: {
         margin: theme.spacing.unit * 1,
@@ -58,10 +61,8 @@ class Connect extends React.Component {
             region: e.target.value,
         })
     }
-    handleClick = () => {
-        this.props.showLoader('Requesting OVH for a "credentialToken"')
-        setTimeout(() => this.props.showLoader('Hang your belt, you will be redirected to OVH to proceed authentication 🚀'), 3000)
-        setTimeout(() => this.props.hideLoader(), 5000)
+    handleClick = async () => {
+        await getNewClientToken(this.state.region)
     }
 
     render() {

@@ -27,11 +27,8 @@ const styles = theme => ({
     },
     msgBox: {
         margin: theme.spacing.unit * 1,
-        [theme.breakpoints.up(400)]: {
-            width: 400,
-            marginLeft: 'auto',
-            marginRight: 'auto',
-        },
+        marginLeft: 'auto',
+        marginRight: 'auto',
         textAlign: 'left'
     },
     console: {
@@ -55,8 +52,8 @@ const Loader = (props) => {
             <div className={classes.loader}></div>
             <div className={classes.content}>
                 <Grid container wrap='nowrap'>
-                    <Grid item xs={12} lg={6} className={classes.msgBox} >
-                        <LinearProgress />
+                    <Grid item xs={10} sm={8} md={8} lg={6} className={classes.msgBox}>
+                        <LinearProgress/>
                         <pre className={classes.console}>{props.msg}</pre>
                     </Grid>
                 </Grid>

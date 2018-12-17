@@ -1,5 +1,5 @@
 import React from 'react'
-import Connect from '../components/connectPaper'
+import Connect from '../components/ConnectPaper'
 
 const Home = props => {
     return (

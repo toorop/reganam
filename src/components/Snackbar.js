@@ -39,7 +39,7 @@ const styles = theme => ({
         backgroundColor: theme.palette.error.dark
     },
     icon: {
-        fontSize:'20',
+        fontSize: '20',
         marginRight: theme.spacing.unit
     },
     message: {
@@ -48,50 +48,50 @@ const styles = theme => ({
     },
 })
 
-const icon = {
-    success: CheckCircleIcon,
-    warning: WarningIcon,
-    error: ErrorIcon,
-    info: InfoIcon,
+const getIcon= (level) => {
+    switch (level) {
+        case 'warning':
+            return WarningIcon
+        case 'error':
+            return ErrorIcon
+        case 'info':
+            return InfoIcon
+        default:
+            return CheckCircleIcon
+    }
 }
 
 
 // todo propType
-class Snackbar extends React.Component {
-    handleClose = () => {
-        this.props.hideSnackbar()
-    }
+const Snackbar = (props) => {
+    const handleClose = () => props.hideSnackbar()
+    const {classes, level} = props
+    const Icon = getIcon()
+    return (
+        <div>
+            <SnackbarOri
+                anchorOrigin={{
+                    vertical: 'bottom',
+                    horizontal: 'left',
+                }}
+                open={props.isVisible}
+                autoHideDuration={10000}
+                onClose={handleClose}
+            >
+                <SnackbarContent
+                    className={classes[level]}
+                    aria-describedby='message-id'
 
-    render() {
-        const {classes, level} = this.props
-        const Icon = icon[level]
-
-        return (
-            <div>
-                <SnackbarOri
-                    anchorOrigin={{
-                        vertical: 'bottom',
-                        horizontal: 'left',
-                    }}
-                    open={this.props.isVisible}
-                    autoHideDuration={10000}
-                    onClose={this.handleClose}
-                >
-                    <SnackbarContent
-                        className={classes[level]}
-                        aria-describedby='message-id'
-
-                        message={
-                            <span id="message-id" className={classes.message}>
-                                <Icon className={classes.icon} />
-                                {this.props.msg}
+                    message={
+                        <span id="message-id" className={classes.message}>
+                                <Icon className={classes.icon}/>
+                            {props.msg}
                             </span>
-                        }
-                    />
-                </SnackbarOri>
-            </div>
-        );
-    }
+                    }
+                />
+            </SnackbarOri>
+        </div>
+    )
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(Snackbar))

@@ -24,7 +24,7 @@ const styles = theme => ({
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
-        [theme.breakpoints.up(400)]: {
+        [theme.breakpoints.up(500)]: {
             marginTop: theme.spacing.unit * 9,
             width: 400,
             marginLeft: 'auto',

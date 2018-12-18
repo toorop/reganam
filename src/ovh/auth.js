@@ -1,8 +1,9 @@
 import axios from 'axios'
 
 import store from '../redux/store'
-import {hideLoader, showLoader, showSnackbar} from "../redux/actions"
-import {accessRules, keyRing, regionToEndPoint} from "./constants"
+import {hideLoader, showLoader, showSnackbar} from '../redux/actions'
+import {accessRules, keyRing, regionToEndPoint} from './constants'
+import {defaultErrorMsg} from '../helpers/constants'
 
 const getBaseClient = (region) => {
     return axios.create({
@@ -26,11 +27,12 @@ export const getNewClientToken = async (region) => {
         // todo redux consumerKey
 
         console.log(validationUrl)
-        store.dispatch(showLoader('Hang your belt, you will be redirected to OVH to be authenticated 🚀'))
-    }
-    catch (e) {
-        console.log(e.response.data.message)
-        store.dispatch(showSnackbar(e.response.data.message, 'error'))
+        store.dispatch(showLoader('🚀 Hang your belt, you will be redirected to OVH for authentication 🚀'))
+    } catch (e) {
+        let userMsg = defaultErrorMsg
+        if (e.response && e.response.data && e.response.data.message)  userMsg = e.response.data.message
+        else if (e.toString() !== '') userMsg = e.toString()
+        store.dispatch(showSnackbar(userMsg, 'error'))
         store.dispatch(hideLoader())
     }
     // redirect to validationURL
@@ -39,7 +41,7 @@ export const getNewClientToken = async (region) => {
 
 const getCredentialToken = async (region) => {
     const payload = {
-        'accesRules': accessRules,
+        'accessRules': accessRules,
         'redirection': 'http://localhost:3000/fromovh'
     }
 

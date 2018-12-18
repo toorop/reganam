@@ -5,8 +5,18 @@ export const regionToEndPoint = {
 }
 
 export const keyRing = {
-    'ak': 'RNl3SvWi3zUpiPVY',
-    'as': 'iPf8ty2F0wjuNhcZYpRMini78v6kjeUZ'
+    'ovh-eu': {
+        'ak': 'RNl3SvWi3zUpiPVY',
+        'as': 'iPf8ty2F0wjuNhcZYpRMini78v6kjeUZ'
+    },
+    'ovh-us':  {
+        'ak': 'dEpqIVMadS8nnTVB',
+        'as': 'oIiRx2f8zcH285UztMbgNOGR1zP7V77O'
+    },
+    'ovh-ca':  {
+        'ak': 'KYWEGSQQIkIxYxdu',
+        'as': 'MwxR6co0FCur4qsim0e2JiQK9khvaeJK'
+    },
 }
 
 export const accessRules = [

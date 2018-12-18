@@ -52,7 +52,7 @@ class Connect extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
-            region: 'ovh-eu',
+            region: props.region,
         }
     }
 

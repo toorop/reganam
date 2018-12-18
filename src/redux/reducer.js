@@ -1,5 +1,7 @@
 import {SHOW_LOADER, HIDE_LOADER, SHOW_SNACKBAR, HIDE_SNACKBAR} from "./constants"
 
+// todo ck region logout
+
 const initialState = {
     // Loader
     loaderIsVisible: false,

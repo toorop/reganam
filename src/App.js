@@ -4,8 +4,12 @@ import CssBaseline from '@material-ui/core/CssBaseline'
 import {Provider} from 'react-redux'
 import store from './redux/store'
 
+import {BrowserRouter, Route, Switch} from "react-router-dom"
+
 import Snackbar from './components/Snackbar'
 
+// screens
+import Notfound from '../src/containers/NotFound'
 import Home from '../src/containers/Home'
 
 import './App.css';
@@ -18,7 +22,15 @@ class App extends Component {
                 <CssBaseline/>
                 <Loader/>
                 <Snackbar/>
-                <Home/>
+
+                <BrowserRouter>
+                    <Switch>
+                        <Route exact path='/' component={Home}/>
+                        <Route component={Notfound} />
+                    </Switch>
+                </BrowserRouter>
+
+
             </Provider>
 
         );

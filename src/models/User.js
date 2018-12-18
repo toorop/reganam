@@ -1,9 +1,8 @@
 class User {
     nic = ''
-    ck = {
-        key: '',
-        state: ''
-    }
+    region = 'ovh-eu'
+    ck = ''
+
 
     save = () => {
         localStorage.setItem('user', JSON.stringify(this))
@@ -18,21 +17,32 @@ class User {
                 localStorage.removeItem('user')
                 return
             }
-            this.ck.key = u.ck.key
-            this.ck.state = u.ck.state
+            this.ck = u.ck
             this.nic = u.nic
+            this.region = u.region
         }
     }
 
+    reset = () => {
+        this.nic=''
+        this.ck=''
+        this.region=''
+        this.save()
+    }
+
     // setters (shortcut)
-    setCk = (key, state) => {
-        this.ck.key = key
-        this.ck.state = state
+    setCk = (key) => {
+        this.ck = key
         this.save()
     }
 
     setNick = (nic) => {
         this.nic=nic
+        this.save()
+    }
+
+    setRegion = (region) => {
+        this.region = region
         this.save()
     }
 

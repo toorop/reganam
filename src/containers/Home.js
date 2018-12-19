@@ -5,6 +5,7 @@ import connect from "react-redux/es/connect/connect"
 import {showLoader, hideLoader, logout, setClientKey, setRegion, showSnackbar} from "../redux/actions"
 import Connect from '../components/ConnectPaper'
 import user from '../models/User'
+import {getTimeDrift} from '../ovh/time'
 import {getCurrentCredential} from "../ovh/api/auth"
 //import store from "../redux/store"
 
@@ -17,13 +18,12 @@ const mapDispatchToProps = {
     showSnackbar
 }
 
-/*
+
 const mapStateToProps = (state) => {
     return {
-        clientKey: state.clientKey,
         region: state.region
     }
-}*/
+}
 
 class Home extends React.Component {
     constructor(props) {
@@ -36,14 +36,12 @@ class Home extends React.Component {
     async componentDidMount() {
         this.props.showLoader('Init in progress')
 
-        // todo get time drift -> state
-        this.props.showLoader('🕰️ Getting time drift between you and OVH space-time')
-
         // check for CK
         user.load()
         if (user.ck === '' || user.region === '') {
             user.reset()
             this.setState({showConnect: true})
+            await this.props.setRegion('ovh-eu')
             this.props.hideLoader()
             return
         }
@@ -58,6 +56,10 @@ class Home extends React.Component {
         // update state
         await this.props.setClientKey(user.ck)
         await this.props.setRegion(user.region)
+
+        //  get time drift
+        this.props.showLoader('🕰️ Getting time drift between you and OVH space-time')
+        await getTimeDrift(user.region)
 
         // is ck valid ?
         this.props.showLoader('Key found 🖖 !')
@@ -76,16 +78,18 @@ class Home extends React.Component {
             return
         }
 
+        // todo if expiration < 5 minutes relogin
         const {expiration} = response.data
 
         console.log(expiration)
     }
 
     render() {
+
         return (
-            this.state.showConnect ? <Connect region={this.state.region}/> : null
+            this.state.showConnect ? <Connect region={this.props.region}/> : null
         )
     }
 }
 
-export default connect(null, mapDispatchToProps)(Home)
+export default connect(mapStateToProps, mapDispatchToProps)(Home)

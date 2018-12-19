@@ -1,20 +1,9 @@
-import axios from 'axios'
-
 import store from '../redux/store'
 import {hideLoader, showLoader, showSnackbar} from '../redux/actions'
-import {accessRules, keyRing, regionToEndPoint} from './constants'
+import {accessRules} from './constants'
+import getBaseClient from './baseClient'
 import {defaultErrorMsg} from '../helpers/constants'
 import user from '../models/User'
-
-const getBaseClient = (region) => {
-    return axios.create({
-        baseURL: 'https://' + regionToEndPoint[region],
-        headers: {
-            'Accept': 'application/json',
-            'X-Ovh-Application': keyRing[region].ak
-        },
-    })
-}
 
 export const getNewClientToken = async (region) => {
     // get new credential token
@@ -24,6 +13,7 @@ export const getNewClientToken = async (region) => {
         user.load()
         const r = await getCredentialToken(region)
         const {consumerKey, validationUrl} = r
+        // we will be redirected to OVH so we do not need to put ck & region in local state
         user.setCk(consumerKey)
         user.setRegion(region)
         store.dispatch(showLoader('🚀 Hang your belt, you will be redirected to OVH for authentication 🚀'))

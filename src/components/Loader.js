@@ -49,7 +49,7 @@ const Loader = (props) => {
     const {classes} = props
     return (
         <React.Fragment>
-            <div className={classes.loader}></div>
+            <div className={classes.loader}/>
             <div className={classes.content}>
                 <Grid container wrap='nowrap'>
                     <Grid item xs={10} sm={8} md={8} lg={6} className={classes.msgBox}>

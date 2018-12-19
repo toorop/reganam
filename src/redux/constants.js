@@ -1,3 +1,6 @@
+// API
+export const SET_TIME_DRIFT = 'SET_TIME_DRIFT'
+
 // Loader
 export const SHOW_LOADER = 'SHOW_LOADER'
 export const HIDE_LOADER = 'HIDE_LOADER'

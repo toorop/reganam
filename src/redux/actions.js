@@ -1,4 +1,7 @@
-import {SHOW_LOADER, HIDE_LOADER, HIDE_SNACKBAR, LOGOUT, SET_CLIENT_KEY, SET_REGION, SHOW_SNACKBAR} from "./constants"
+import {SHOW_LOADER, HIDE_LOADER, HIDE_SNACKBAR, LOGOUT, SET_CLIENT_KEY, SET_TIME_DRIFT, SET_REGION, SHOW_SNACKBAR} from "./constants"
+
+// API
+export const setTimeDrift = (timeDrift) => ({type: SET_TIME_DRIFT, timeDrift: timeDrift})
 
 // Loader
 export const showLoader = (msg) => ({type: SHOW_LOADER, msg: msg})

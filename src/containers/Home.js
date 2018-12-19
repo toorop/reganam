@@ -59,7 +59,11 @@ class Home extends React.Component {
 
         //  get time drift
         this.props.showLoader('🕰️ Getting time drift between you and OVH space-time')
-        await getTimeDrift(user.region)
+        try {
+            await getTimeDrift(user.region)
+        } catch {
+            this.props.showSnackbar('Could\'nt get tile drift, expecting you are on the same space-time than OVH... ', 'error')
+        }
 
         // is ck valid ?
         this.props.showLoader('Key found 🖖 !')
@@ -85,7 +89,6 @@ class Home extends React.Component {
     }
 
     render() {
-
         return (
             this.state.showConnect ? <Connect region={this.props.region}/> : null
         )

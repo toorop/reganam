@@ -29,8 +29,8 @@ const client = axios.create({
 // Request interceptor
 client.interceptors.request.use((config) => {
     store.dispatch(showLoader('Requesting OVH API'))
-    const now = Math.round(Date.now() / 1000)
-    const {clientKey, region} = store.getState()
+    const {clientKey, region, timeDrift} = store.getState()
+    const now = Math.round(Date.now() / 1000) + timeDrift
     config.baseURL = 'https://' + regionToEndPoint[region]
     config.headers['X-Ovh-Application'] = keyRing[region].ak
     config.headers['X-Ovh-Consumer'] = clientKey

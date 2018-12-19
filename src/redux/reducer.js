@@ -1,9 +1,22 @@
-import {SHOW_LOADER, HIDE_LOADER, SHOW_SNACKBAR, HIDE_SNACKBAR, LOGOUT, SET_CLIENT_KEY, SET_REGION} from "./constants"
+import {
+    SHOW_LOADER,
+    HIDE_LOADER,
+    SHOW_SNACKBAR,
+    HIDE_SNACKBAR,
+    LOGOUT,
+    SET_CLIENT_KEY,
+    SET_TIME_DRIFT,
+    SET_REGION
+} from "./constants"
 import user from '../models/User'
 
 // todo ck region logout
 
 const initialState = {
+    // API
+    timeDrift: 0,
+    region: '',
+
     // Loader
     loaderIsVisible: false,
     loaderMessage: '',
@@ -15,11 +28,15 @@ const initialState = {
 
     // User
     clientKey: '',
-    region: ''
+
 }
 
 const rootReducer = (state = initialState, action) => {
     switch (action.type) {
+        // API
+        case SET_TIME_DRIFT:
+            return {...state, timeDrift: action.timeDrift}
+
         // Loader
         case SHOW_LOADER:
             return {...state, loaderIsVisible: true, loaderMessage: action.msg}
@@ -39,7 +56,7 @@ const rootReducer = (state = initialState, action) => {
             return {...state, region: action.region}
         case LOGOUT:
             user.reset()
-            return {...state, clientKey: '', region: ''}
+            return {...state, clientKey: ''}
         default:
             return state
     }

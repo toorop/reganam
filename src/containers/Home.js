@@ -7,7 +7,6 @@ import Connect from '../components/ConnectPaper'
 import user from '../models/User'
 import {getTimeDrift} from '../ovh/time'
 import {getCurrentCredential} from "../ovh/api/auth"
-//import store from "../redux/store"
 
 const mapDispatchToProps = {
     showLoader,
@@ -17,7 +16,6 @@ const mapDispatchToProps = {
     setRegion,
     showSnackbar
 }
-
 
 const mapStateToProps = (state) => {
     return {
@@ -53,6 +51,8 @@ class Home extends React.Component {
             return
         }
 
+        this.props.showLoader('Key found 🖖 !')
+
         // update state
         await this.props.setClientKey(user.ck)
         await this.props.setRegion(user.region)
@@ -62,11 +62,8 @@ class Home extends React.Component {
         try {
             await getTimeDrift(user.region)
         } catch {
-            this.props.showSnackbar('Could\'nt get tile drift, expecting you are on the same space-time than OVH... ', 'error')
+            this.props.showSnackbar('Could\'nt get time drift, expecting you are on the same space-time than OVH... ', 'error')
         }
-
-        // is ck valid ?
-        this.props.showLoader('Key found 🖖 !')
 
         // get ck info
         let response
@@ -78,14 +75,24 @@ class Home extends React.Component {
                 this.props.showSnackbar('Your token has expired 😭', 'error')
             }
             this.props.logout()
+            this.props.hideLoader()
             this.setState({showConnect: true})
             return
         }
 
-        // todo if expiration < 5 minutes relogin
+        // if expiration < 1 minutes => re-login
         const {expiration} = response.data
+        const diff = Math.round((new Date(expiration).getTime() - new Date().getTime()) / 1000)
+        if (diff < 60) {
+            this.props.showSnackbar('Your token will expire in less than 60 sec. Requesting a new one seems to be a good idea', 'info')
+            this.props.logout()
+            this.props.hideLoader()
+            this.setState({showConnect: true})
+            return
+        }
 
-        console.log(expiration)
+        // todo redirect to dashboard
+
     }
 
     render() {

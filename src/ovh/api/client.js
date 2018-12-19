@@ -5,17 +5,13 @@ import store from '../../redux/store'
 import {hideLoader, showLoader, showSnackbar} from '../../redux/actions'
 
 import {keyRing, regionToEndPoint} from '../constants'
-import user from '../../models/User'
 import {defaultErrorMsg} from "../../helpers/constants"
 
-// todo handle err
-
-user.load()
-
 const signRequest = (httpMethod, url, body, timestamp) => {
+    const {clientKey, region} = store.getState()
     let s = [
-        keyRing[user.region].as,
-        user.ck,
+        keyRing[region].as,
+        clientKey,
         httpMethod,
         url,
         body || '',
@@ -25,11 +21,8 @@ const signRequest = (httpMethod, url, body, timestamp) => {
 }
 
 const client = axios.create({
-    baseURL: 'https://' + regionToEndPoint[user.region],
     headers: {
         'Accept': 'application/json',
-        'X-Ovh-Application': keyRing[user.region].ak,
-        'X-Ovh-Consumer': user.ck
     }
 })
 
@@ -37,6 +30,10 @@ const client = axios.create({
 client.interceptors.request.use((config) => {
     store.dispatch(showLoader('Requesting OVH API'))
     const now = Math.round(Date.now() / 1000)
+    const {clientKey, region} = store.getState()
+    config.baseURL = 'https://' + regionToEndPoint[region]
+    config.headers['X-Ovh-Application'] = keyRing[region].ak
+    config.headers['X-Ovh-Consumer'] = clientKey
     config.headers['X-Ovh-Timestamp'] = now
     config.headers['X-Ovh-Signature'] = signRequest(
         config.method.toUpperCase(),
@@ -59,5 +56,6 @@ client.interceptors.response.use((response) => {
     store.dispatch(hideLoader())
     return Promise.reject(error)
 })
+
 export default client
 

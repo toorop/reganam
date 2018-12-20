@@ -26,7 +26,7 @@ class User {
     reset = () => {
         this.nic=''
         this.ck=''
-        this.region=''
+        //this.region=''
         this.save()
     }
 

@@ -70,7 +70,6 @@ class Home extends React.Component {
         try {
             response = await getCurrentCredential()
         } catch (e) {
-            console.log(e.response.data)
             if (e.response.data.errorCode === 'INVALID_CREDENTIAL') {
                 this.props.showSnackbar('Your token has expired 😭', 'error')
             }

@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import PropTypes from 'prop-types';
 import {withStyles} from '@material-ui/core/styles';
 
-import {showLoader, hideLoader} from "../redux/actions"
+import {hideLoader, showLoader, setRegion} from "../redux/actions"
 
 import Avatar from '@material-ui/core/Avatar'
 import Button from "@material-ui/core/Button/Button"
@@ -44,25 +44,26 @@ const styles = theme => ({
 
 const mapDispatchToProps = {
     showLoader,
-    hideLoader
+    hideLoader,
+    setRegion
+}
+
+const mapStateToProps = (state) => {
+    return {
+        region: state.region
+    }
 }
 
 //const Connect = props => {
 class Connect extends React.Component {
-    constructor(props) {
-        super(props)
-        this.state = {
-            region: props.region,
-        }
-    }
+
 
     handleChange = (e) => {
-        this.setState({
-            region: e.target.value,
-        })
+        this.props.setRegion(e.target.value)
     }
     handleClick = async () => {
-        await getNewClientToken(this.state.region)
+        // todo remove opts
+        await getNewClientToken(this.props.region)
     }
 
     render() {
@@ -80,7 +81,7 @@ class Connect extends React.Component {
                         <InputLabel htmlFor="select-region">Region</InputLabel>
                         <Select
                             native
-                            value={this.state['region']}
+                            value={this.props.region}
                             onChange={this.handleChange}
                             inputProps={{
                                 name: 'region',
@@ -111,4 +112,4 @@ Connect.propTypes = {
 
 //Connect.contextType = LoaderContext
 
-export default connect(null, mapDispatchToProps)(withStyles(styles)(Connect))
+export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(Connect))

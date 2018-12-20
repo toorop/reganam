@@ -5,7 +5,9 @@ import getBaseClient from './baseClient'
 import {defaultErrorMsg} from '../helpers/constants'
 import user from '../models/User'
 
-export const getNewClientToken = async (region) => {
+export const getNewClientToken = async () => {
+    const {region} = store.getState()
+
     // get new credential token
     store.dispatch(showLoader('Requesting OVH for a "credentialToken"'))
 
@@ -13,7 +15,7 @@ export const getNewClientToken = async (region) => {
         user.load()
         const r = await getCredentialToken(region)
         const {consumerKey, validationUrl} = r
-        // we will be redirected to OVH so we do not need to put ck & region in local state
+        // we will be redirected to OVH so we need to keep CK and region in local storage
         user.setCk(consumerKey)
         user.setRegion(region)
         store.dispatch(showLoader('🚀 Hang your belt, you will be redirected to OVH for authentication 🚀'))
@@ -27,7 +29,9 @@ export const getNewClientToken = async (region) => {
     }
 }
 
-const getCredentialToken = async (region) => {
+// return a token
+const getCredentialToken = async () => {
+    const {region} = store.getState()
     const payload = {
         'accessRules': accessRules,
         'redirection': window.location.origin

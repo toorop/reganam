@@ -57,7 +57,6 @@ const mapStateToProps = (state) => {
 //const Connect = props => {
 class Connect extends React.Component {
 
-
     handleChange = (e) => {
         this.props.setRegion(e.target.value)
     }

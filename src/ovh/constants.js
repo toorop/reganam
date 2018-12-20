@@ -9,11 +9,11 @@ export const keyRing = {
         'ak': 'RNl3SvWi3zUpiPVY',
         'as': 'iPf8ty2F0wjuNhcZYpRMini78v6kjeUZ'
     },
-    'ovh-us':  {
+    'ovh-us': {
         'ak': 'dEpqIVMadS8nnTVB',
         'as': 'oIiRx2f8zcH285UztMbgNOGR1zP7V77O'
     },
-    'ovh-ca':  {
+    'ovh-ca': {
         'ak': 'KYWEGSQQIkIxYxdu',
         'as': 'MwxR6co0FCur4qsim0e2JiQK9khvaeJK'
     },
@@ -21,12 +21,14 @@ export const keyRing = {
 
 export const accessRules = [
     {
-        'method': 'POST',
-        'path': '/auth/*'
-    },
-    {
-        'method': 'GET',
-        'path': '/auth/*'
+        'path': '/auth/*',
+        'method': 'POST'
+    }, {
+        'path': '/auth/*',
+        'method': 'GET'
+    }, {
+        'path': '/me',
+        'method': 'GET'
     }
 ]
 

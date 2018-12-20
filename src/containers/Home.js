@@ -1,6 +1,7 @@
 import React from 'react'
 
 import connect from "react-redux/es/connect/connect"
+import {Redirect} from 'react-router-dom'
 
 import {showLoader, hideLoader, logout, setClientKey, setRegion, showSnackbar} from "../redux/actions"
 import Connect from '../components/ConnectPaper'
@@ -28,6 +29,7 @@ class Home extends React.Component {
         super(props)
         this.state = {
             showConnect: false,
+            isLogged: false
         }
     }
 
@@ -90,11 +92,16 @@ class Home extends React.Component {
             return
         }
 
-        // todo redirect to dashboard
+        // redirect to dashboard
+        await this.setState({isLogged: true})
+        this.props.hideLoader()
 
     }
 
     render() {
+        if (this.state.isLogged) {
+            return <Redirect to='/dashboard'/>
+        }
         return (
             this.state.showConnect ? <Connect region={this.props.region}/> : null
         )

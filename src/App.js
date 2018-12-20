@@ -14,6 +14,8 @@ import Home from '../src/containers/Home'
 
 import './App.css';
 import Loader from "./components/Loader"
+import Dashboard from "./containers/Dashboard"
+import ProtectedRoute from "./components/ProtectedRoute"
 
 class App extends Component {
     render() {
@@ -26,13 +28,11 @@ class App extends Component {
                 <BrowserRouter>
                     <Switch>
                         <Route exact path='/' component={Home}/>
-                        <Route component={Notfound} />
+                        <ProtectedRoute exact path='/dashboard' component={Dashboard}/>
+                        <Route component={Notfound}/>
                     </Switch>
                 </BrowserRouter>
-
-
             </Provider>
-
         );
     }
 }

@@ -21,10 +21,10 @@ class App extends Component {
     render() {
         return (
             <Provider store={store}>
+                <CssBaseline/>
+                <Loader/>
+                <Snackbar/>
                 <BrowserRouter>
-                    <CssBaseline/>
-                    <Loader/>
-                    <Snackbar/>
                     <Switch>
                         <Route exact path='/' component={Home}/>
                         <ProtectedRoute path='/dashboard' component={Dashboard}/>

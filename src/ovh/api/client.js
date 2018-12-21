@@ -2,7 +2,7 @@ import axios from 'axios'
 import sha1 from 'sha1'
 
 import store from '../../redux/store'
-import {hideLoader, showLoader, showSnackbar} from '../../redux/actions'
+import {showSnackbar} from '../../redux/actions'
 
 import {keyRing, regionToEndPoint} from '../constants'
 import {defaultErrorMsg} from "../../helpers/constants"
@@ -28,7 +28,7 @@ const client = axios.create({
 
 // Request interceptor
 client.interceptors.request.use((config) => {
-    store.dispatch(showLoader('Requesting OVH API'))
+    //store.dispatch(showLoader('Requesting OVH API'))
     const {clientKey, region, timeDrift} = store.getState()
     const now = Math.round(Date.now() / 1000) + timeDrift
     config.baseURL = 'https://' + regionToEndPoint[region]
@@ -53,7 +53,6 @@ client.interceptors.response.use((response) => {
     if (error.response && error.response.data && error.response.data.message) userMsg = error.response.data.message
     else if (error.toString() !== '') userMsg = error.toString()
     store.dispatch(showSnackbar(userMsg, 'error'))
-    store.dispatch(hideLoader())
     return Promise.reject(error)
 })
 

@@ -73,7 +73,7 @@ class Header extends React.Component {
                         <MenuIcon/>
                     </IconButton>
                     <Typography className={classes.grow} variant='h6' color='inherit'>
-                        Reganam
+
                     </Typography>
                     < Typography color="inherit">{firstName}</Typography>
                     <div>

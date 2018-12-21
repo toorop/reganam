@@ -19,7 +19,7 @@ export const getNewClientToken = async () => {
         user.setCk(consumerKey)
         user.setRegion(region)
         store.dispatch(showLoader('🚀 Hang your belt, you will be redirected to OVH for authentication 🚀'))
-        setTimeout(() => window.location = validationUrl, 2000)
+        setTimeout(() => window.location = validationUrl, 1000)
     } catch (e) {
         let userMsg = defaultErrorMsg
         if (e.response && e.response.data && e.response.data.message) userMsg = e.response.data.message

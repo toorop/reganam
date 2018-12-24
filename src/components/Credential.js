@@ -1,11 +1,14 @@
 import React from 'react'
 import {withStyles} from '@material-ui/core/styles'
-import Button from '@material-ui/core/Button'
+import IconButton from '@material-ui/core/IconButton'
 import TableRow from '@material-ui/core/TableRow'
 import TableCell from '@material-ui/core/TableCell'
 import CircularProgress from '@material-ui/core/CircularProgress'
-import {getAppInfo, getCredentialInfo} from "../ovh/api/me"
 import Typography from "@material-ui/core/es/Typography/Typography"
+import DeleteIcon from '@material-ui/icons/Delete'
+import InfoIcon from '@material-ui/icons/Info'
+
+import {getAppInfo, getCredentialInfo} from '../ovh/api/me'
 
 const styles = theme => ({
     root: {
@@ -80,12 +83,15 @@ class Credential extends React.Component {
                 </TableCell>
                 <TableCell>{this.state.creation.toDateString()}</TableCell>
                 <TableCell>{this.state.expiration.toDateString()}</TableCell>
-                <TableCell>{JSON.stringify(this.state.rules)}</TableCell>
-                <TableCell>{this.state.status}</TableCell>
                 <TableCell>
-                    <Button variant="contained" color="secondary" size="small">
-                        Delete
-                    </Button>
+                    <IconButton color="primary" aria-label="More info">
+                        <InfoIcon />
+                    </IconButton>
+                </TableCell>
+                <TableCell>
+                    <IconButton color="secondary" aria-label="Delete">
+                        <DeleteIcon />
+                    </IconButton>
                 </TableCell>
             </TableRow>
 

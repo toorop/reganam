@@ -15,6 +15,7 @@ import TableBody from '@material-ui/core/TableBody'
 import TableRow from "@material-ui/core/TableRow"
 import TableCell from '@material-ui/core/TableCell'
 import Paper from "@material-ui/core/es/Paper/Paper"
+import Typography from "@material-ui/core/es/Typography/Typography"
 
 const mapDispatchToProps = {
     hideLoader,
@@ -22,7 +23,10 @@ const mapDispatchToProps = {
 }
 
 const styles = theme => ({
-    root: {
+    title:{
+        margin: theme.spacing.unit *3
+    },
+    paper: {
         overflowX: 'auto',
         margin: theme.spacing.unit,
         marginTop: theme.spacing.unit * 2,
@@ -76,7 +80,8 @@ class CredentialsModule extends React.Component {
                     onClose={this.handleDialogClose}
                     credentialInfo={this.state.dialogCredentialInfo}
                 />
-                < Paper className={classes.root} xs={12}>
+                <Typography className={classes.title} variant={'display1'} align={'center'} >API Credentials</Typography>
+                < Paper className={classes.paper} xs={12}>
                     <Table>
                         <TableHead>
                             <TableRow>

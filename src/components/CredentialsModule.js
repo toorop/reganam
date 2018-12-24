@@ -7,6 +7,7 @@ import {hideLoader, showLoader} from '../redux/actions'
 
 import {getCredentials} from '../ovh/api/me'
 import Credential from './Credential'
+import DialogDetails from './CredentialDialogDetails'
 
 import TableHead from '@material-ui/core/TableHead'
 import Table from '@material-ui/core/Table'
@@ -33,9 +34,25 @@ class CredentialsModule extends React.Component {
         super(props)
         this.state = {
             initDone: false,
-            credentials: []
+            credentials: [],
+            dialogIsOpen: false,
+            dialogCredentialInfo: null
         }
     }
+
+    handleDialogOpen = (credentialInfo) => {
+        this.setState({
+            dialogCredentialInfo:credentialInfo,
+            dialogIsOpen: true
+        })
+    }
+
+    handleDialogClose = () => {
+        this.setState({
+            dialogIsOpen: false
+        })
+    }
+
 
     async componentDidMount() {
         this.props.showLoader('Retrieving credentials')
@@ -49,26 +66,31 @@ class CredentialsModule extends React.Component {
         const {classes} = this.props
         const nbRows = this.state.credentials.length > 10 ? 10 : this.state.credentials.length
         const credentialItems = [...this.state.credentials].reverse().slice(0, nbRows).map((id) =>
-            <Credential key={id} id={id}/>
+            <Credential key={id} id={id} openDialog={this.handleDialogOpen}/>
         )
 
         return (
-            < Paper  className={classes.root} xs={12}>
-                <Table>
-                    <TableHead>
-                        <TableRow>
-                            <TableCell>Application</TableCell>
-                            <TableCell>Creation</TableCell>
-                            <TableCell>Expiration</TableCell>
-                            <TableCell>Details</TableCell>
-                            <TableCell>Delete</TableCell>
-                        </TableRow>
-                    </TableHead>
-                    <TableBody>
-                        {credentialItems}
-                    </TableBody>
-                </Table>
-            </Paper>
+            <React.Fragment>
+                <DialogDetails
+                    open={this.state.dialogIsOpen}
+                    onClose={this.handleDialogClose}
+                    credentialInfo={this.state.dialogCredentialInfo}
+                />
+                < Paper className={classes.root} xs={12}>
+                    <Table>
+                        <TableHead>
+                            <TableRow>
+                                <TableCell>Application</TableCell>
+                                <TableCell>Creation</TableCell>
+                                <TableCell>Details</TableCell>
+                            </TableRow>
+                        </TableHead>
+                        <TableBody>
+                            {credentialItems}
+                        </TableBody>
+                    </Table>
+                </Paper>
+            </React.Fragment>
         )
     }
 }

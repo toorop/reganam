@@ -1,14 +1,15 @@
 import React from 'react'
 import {withStyles} from '@material-ui/core/styles'
+
 import IconButton from '@material-ui/core/IconButton'
 import TableRow from '@material-ui/core/TableRow'
 import TableCell from '@material-ui/core/TableCell'
 import CircularProgress from '@material-ui/core/CircularProgress'
 import Typography from "@material-ui/core/es/Typography/Typography"
-import DeleteIcon from '@material-ui/icons/Delete'
 import InfoIcon from '@material-ui/icons/Info'
 
 import {getAppInfo, getCredentialInfo} from '../ovh/api/me'
+
 
 const styles = theme => ({
     root: {
@@ -17,6 +18,9 @@ const styles = theme => ({
         marginBottom: theme.spacing.unit * 1,
         marginRight: theme.spacing.unit * 1,
         marginLeft: theme.spacing.unit * 1,
+    },
+    iconButton: {
+        fontSize: '30px'
     },
     progress: {
         display: 'flex',
@@ -30,26 +34,29 @@ class Credential extends React.Component {
         const {id} = props
         this.state = {
             initDone: false,
-            id: id,
-            applicationId: 0,
-            applicationName: '',
-            applicationDescription: '',
-            ovhSupport: false,
-            creation: 0,
-            expiration: 0,
-            status: '',
-            rules: [],
+            info: {
+                id: id,
+                applicationId: 0,
+                applicationName: '',
+                applicationDescription: '',
+                ovhSupport: false,
+                creation: 0,
+                expiration: 0,
+                status: '',
+                rules: [],
+            },
+
         }
     }
 
     async componentDidMount() {
         // get credential info
-        const credentialInfo = await getCredentialInfo(this.state.id)
+        const credentialInfo = await getCredentialInfo(this.state.info.id)
 
         // get application info
-        const appInfo = await getAppInfo(this.state.id)
-        this.setState({
-            initDone: true,
+        const appInfo = await getAppInfo(this.state.info.id)
+        const info = {
+            id: this.state.info.id,
             applicationId: appInfo.applicationId,
             applicationName: appInfo.name,
             applicationDescription: appInfo.description,
@@ -58,17 +65,23 @@ class Credential extends React.Component {
             expiration: new Date(credentialInfo.expiration),
             status: credentialInfo.status,
             rules: credentialInfo.rules
+        }
+
+        this.setState({
+            initDone: true,
+            info: info
         })
 
     }
 
     render() {
-        const {classes} = this.props
+        const {classes, openDialog} = this.props
+
         if (!this.state.initDone) {
             return (
                 <TableRow>
                     <TableCell>
-                        <div key={this.state.id} className={classes.progress}><CircularProgress/></div>
+                        <div key={this.state.info.id} className={classes.progress}><CircularProgress/></div>
                     </TableCell>
                 </TableRow>
             )
@@ -78,19 +91,13 @@ class Credential extends React.Component {
             <TableRow key={this.state.id}>
                 <TableCell component="th" scope="row">
                     <Typography variant={'overline'}>
-                        {this.state.applicationName}
+                        {this.state.info.applicationName}
                     </Typography>
                 </TableCell>
-                <TableCell>{this.state.creation.toDateString()}</TableCell>
-                <TableCell>{this.state.expiration.toDateString()}</TableCell>
+                <TableCell>{this.state.info.creation.toLocaleString()}</TableCell>
                 <TableCell>
-                    <IconButton color="primary" aria-label="More info">
-                        <InfoIcon />
-                    </IconButton>
-                </TableCell>
-                <TableCell>
-                    <IconButton color="secondary" aria-label="Delete">
-                        <DeleteIcon />
+                    <IconButton color="primary" aria-label="More info" className={classes.iconButton} onClick={() => openDialog(this.state.info)}>
+                        <InfoIcon className={classes.iconButton}/>
                     </IconButton>
                 </TableCell>
             </TableRow>

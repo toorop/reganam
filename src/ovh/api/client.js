@@ -20,17 +20,17 @@ const signRequest = (httpMethod, url, body, timestamp) => {
     return '$1$' + sha1(s.join('+'))
 }
 
-const client = axios.create({
+
+let client = axios.create({
     headers: {
         'Accept': 'application/json',
-    }
+    },
 })
 
 // Request interceptor
 client.interceptors.request.use((config) => {
-    //store.dispatch(showLoader('Requesting OVH API'))
     const {clientKey, region, timeDrift} = store.getState()
-    const now = Math.round(Date.now() / 1000) + timeDrift
+    const now = Math.round(Date.now() / 1000) - timeDrift
     config.baseURL = 'https://' + regionToEndPoint[region]
     config.headers['X-Ovh-Application'] = keyRing[region].ak
     config.headers['X-Ovh-Consumer'] = clientKey

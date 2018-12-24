@@ -75,7 +75,7 @@ class Home extends React.Component {
             if (e.response.data.errorCode === 'INVALID_CREDENTIAL') {
                 this.props.showSnackbar('Your token has expired 😭', 'error')
             }
-            this.props.logout()
+            //this.props.logout()
             this.props.hideLoader()
             this.setState({showConnect: true})
             return

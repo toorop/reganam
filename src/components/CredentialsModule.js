@@ -14,6 +14,7 @@ import Table from '@material-ui/core/Table'
 import TableBody from '@material-ui/core/TableBody'
 import TableRow from "@material-ui/core/TableRow"
 import TableCell from '@material-ui/core/TableCell'
+import TablePagination from '@material-ui/core/TablePagination'
 import Paper from "@material-ui/core/es/Paper/Paper"
 import Typography from "@material-ui/core/es/Typography/Typography"
 
@@ -41,7 +42,9 @@ class CredentialsModule extends React.Component {
             initDone: false,
             credentials: [],
             dialogIsOpen: false,
-            dialogCredentialInfo: null
+            dialogCredentialInfo: null,
+            rowsPerPage: 10,
+            page: 0
         }
     }
 
@@ -69,21 +72,27 @@ class CredentialsModule extends React.Component {
         }
     }
 
+    handleChangePage = (e, page) => {
+        this.setState({page: page})
+    }
+
+    handleChangeRowsPerPage = e => this.setState({rowsPerPage: e.target.value})
+
     async componentDidMount() {
         this.props.showLoader('Retrieving credentials')
         const credentialsId = await getCredentials()
-        this.setState({initDone: true, credentials: credentialsId})
+        this.setState({initDone: true, credentials: credentialsId.reverse()})
         this.props.hideLoader()
     }
 
     render() {
         if (!this.state.initDone) return null
         const {classes} = this.props
-        const nbRows = this.state.credentials.length > 10 ? 10 : this.state.credentials.length
-        const credentialItems = [...this.state.credentials].reverse().slice(0, nbRows).map((id) =>
+        const {credentials, page, rowsPerPage} = this.state
+        const start = page * rowsPerPage
+        const credentialItems = [...credentials].slice(start, start + rowsPerPage).map((id) =>
             <Credential key={id} id={id} openDialog={this.handleDialogOpen}/>
         )
-
         return (
             <React.Fragment>
                 <DialogDetails
@@ -92,7 +101,9 @@ class CredentialsModule extends React.Component {
                     credentialInfo={this.state.dialogCredentialInfo}
                 />
                 <Typography className={classes.title} variant={'display1'} align={'center'}>API Credentials</Typography>
-                < Paper className={classes.paper} xs={12}>
+
+
+                <Paper className={classes.paper} xs={12}>
                     <Table>
                         <TableHead>
                             <TableRow>
@@ -105,6 +116,21 @@ class CredentialsModule extends React.Component {
                             {credentialItems}
                         </TableBody>
                     </Table>
+                    <TablePagination
+                        rowsPerPageOptions={[5, 10, 25]}
+                        component="div"
+                        count={credentials.length}
+                        rowsPerPage={rowsPerPage}
+                        page={page}
+                        backIconButtonProps={{
+                            'aria-label': 'Previous Page',
+                        }}
+                        nextIconButtonProps={{
+                            'aria-label': 'Next Page',
+                        }}
+                        onChangePage={this.handleChangePage}
+                        onChangeRowsPerPage={this.handleChangeRowsPerPage}
+                    />
                 </Paper>
             </React.Fragment>
         )

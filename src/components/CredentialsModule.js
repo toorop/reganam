@@ -51,9 +51,13 @@ class CredentialsModule extends React.Component {
         })
     }
 
-    handleDialogClose = () => {
+    handleDialogClose = (credentialId) => {
+        console.log('credential ID: ' + credentialId)
+        // todo delete credential
+        const credentials = [...this.state.credentials].filter(Id => Id !== credentialId)
         this.setState({
-            dialogIsOpen: false
+            dialogIsOpen: false,
+            credentials: credentials
         })
     }
 

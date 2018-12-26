@@ -16,14 +16,13 @@ const styles = theme => ({
         textAlign: 'center'
     },
     buttonContainer: {
-        marginTop: theme.spacing.unit *2,
+        marginTop: theme.spacing.unit * 2,
         textAlign: 'center'
     }
 })
 
 const DialogDetails = (props) => {
     const {credentialInfo, classes, onClose, ...rest} = props
-
     if (credentialInfo === null) return null
     return (
         <Dialog
@@ -38,6 +37,16 @@ const DialogDetails = (props) => {
                 </Typography>
             </DialogTitle>
             <DialogContent>
+                <div>
+                    <Typography variant={"body1"} className={classes.line}>
+                        <strong>Token ID:</strong> {credentialInfo.id}
+                    </Typography>
+                </div>
+                <div>
+                    <Typography variant={"body1"} className={classes.line}>
+                        <strong>Application ID:</strong> {credentialInfo.applicationId}
+                    </Typography>
+                </div>
                 <div>
                     <Typography variant={"body1"} className={classes.line}>
                         <strong>Creation:</strong> {credentialInfo.creation.toLocaleString()}
@@ -58,10 +67,18 @@ const DialogDetails = (props) => {
                         <strong>Rules:</strong> {JSON.stringify(credentialInfo.rules)}
                     </Typography>
                 </div>
-                <Grid className={classes.buttonContainer}>
-                    <Button variant="contained" color="secondary" className={classes.button} onClick={onClose}>
-                        delete this token
-                    </Button>
+                <Grid container className={classes.buttonContainer} justify={"center"} spacing={16}>
+                    <Grid item>
+                        <Button variant="contained" color="secondary" className={classes.button}
+                                onClick={() => onClose(credentialInfo.id)}>
+                            delete this token
+                        </Button>
+                    </Grid>
+                    <Grid item>
+                        <Button variant="contained" color="primary" className={classes.button} onClick={onClose}>
+                            close
+                        </Button>
+                    </Grid>
                 </Grid>
             </DialogContent>
 

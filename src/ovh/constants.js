@@ -32,6 +32,9 @@ export const accessRules = [
     }, {
         'path': '/me/*',
         'method': 'GET'
+    }, {
+        'path': '/me/*',
+        'method': 'DELETE'
     }
 ]
 

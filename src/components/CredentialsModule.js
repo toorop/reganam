@@ -3,9 +3,9 @@ import {connect} from 'react-redux'
 import PropTypes from 'prop-types';
 import {withStyles} from '@material-ui/core/styles';
 
-import {hideLoader, showLoader} from '../redux/actions'
+import {hideLoader, showLoader, showSnackbar} from '../redux/actions'
 
-import {getCredentials} from '../ovh/api/me'
+import {deleteCredential, getCredentials} from '../ovh/api/me'
 import Credential from './Credential'
 import DialogDetails from './CredentialDialogDetails'
 
@@ -19,12 +19,13 @@ import Typography from "@material-ui/core/es/Typography/Typography"
 
 const mapDispatchToProps = {
     hideLoader,
-    showLoader
+    showLoader,
+    showSnackbar
 }
 
 const styles = theme => ({
-    title:{
-        margin: theme.spacing.unit *3
+    title: {
+        margin: theme.spacing.unit * 3
     },
     paper: {
         overflowX: 'auto',
@@ -46,21 +47,27 @@ class CredentialsModule extends React.Component {
 
     handleDialogOpen = (credentialInfo) => {
         this.setState({
-            dialogCredentialInfo:credentialInfo,
+            dialogCredentialInfo: credentialInfo,
             dialogIsOpen: true
         })
     }
 
-    handleDialogClose = (credentialId) => {
-        console.log('credential ID: ' + credentialId)
-        // todo delete credential
-        const credentials = [...this.state.credentials].filter(Id => Id !== credentialId)
-        this.setState({
-            dialogIsOpen: false,
-            credentials: credentials
-        })
+    handleDialogClose = async (credentialId) => {
+        // delete credential
+        if (credentialId !== null) {
+            await deleteCredential(credentialId)
+            const credentials = [...this.state.credentials].filter(Id => Id !== credentialId)
+            this.setState({
+                dialogIsOpen: false,
+                credentials: credentials
+            })
+            this.props.showSnackbar(`Credential ${credentialId} deleted`, 'success')
+        } else {
+            this.setState({
+                dialogIsOpen: false,
+            })
+        }
     }
-
 
     async componentDidMount() {
         this.props.showLoader('Retrieving credentials')
@@ -84,7 +91,7 @@ class CredentialsModule extends React.Component {
                     onClose={this.handleDialogClose}
                     credentialInfo={this.state.dialogCredentialInfo}
                 />
-                <Typography className={classes.title} variant={'display1'} align={'center'} >API Credentials</Typography>
+                <Typography className={classes.title} variant={'display1'} align={'center'}>API Credentials</Typography>
                 < Paper className={classes.paper} xs={12}>
                     <Table>
                         <TableHead>

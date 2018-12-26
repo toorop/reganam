@@ -75,7 +75,7 @@ const DialogDetails = (props) => {
                         </Button>
                     </Grid>
                     <Grid item>
-                        <Button variant="contained" color="primary" className={classes.button} onClick={onClose}>
+                        <Button variant="contained" color="primary" className={classes.button} onClick={()=>onClose(null)}>
                             close
                         </Button>
                     </Grid>

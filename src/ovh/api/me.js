@@ -1,6 +1,5 @@
 import client from './client'
 
-
 // get me return user info
 export const getMe = async () => {
     const r = await client.get('/me')
@@ -13,13 +12,20 @@ export const getCredentials = async () => {
     return r.data
 }
 
-export const getCredentialInfo = async (credentialID) => {
-    const r = await client.get(`/me/api/credential/${credentialID}`)
+// return credential info
+export const getCredentialInfo = async (credentialId) => {
+    const r = await client.get(`/me/api/credential/${credentialId}`)
     return r.data
 }
 
-export const getAppInfo = async (credentialID) => {
-    const r = await client.get(`/me/api/credential/${credentialID}/application`)
+// delete credential
+export const deleteCredential = async (credentialId) => {
+    await client.delete(`/me/api/credential/${credentialId}`)
+}
+
+// return app info
+export const getAppInfo = async (credentialId) => {
+    const r = await client.get(`/me/api/credential/${credentialId}/application`)
     return r.data
 
 }

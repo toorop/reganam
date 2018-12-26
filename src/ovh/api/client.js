@@ -20,7 +20,6 @@ const signRequest = (httpMethod, url, body, timestamp) => {
     return '$1$' + sha1(s.join('+'))
 }
 
-
 let client = axios.create({
     headers: {
         'Accept': 'application/json',
@@ -49,9 +48,29 @@ client.interceptors.request.use((config) => {
 client.interceptors.response.use((response) => {
     return response
 }, (error) => {
+    //console.log(error.response.data.errorCode)
     let userMsg = defaultErrorMsg
-    if (error.response && error.response.data && error.response.data.message) userMsg = error.response.data.message
-    else if (error.toString() !== '') userMsg = error.toString()
+    let errorCode = null
+    if (error.response && error.response.data) {
+        // get errCode
+        if (error.response.data.errorCode) errorCode = error.response.data.errorCode
+        // get message
+        if (error.response.data.message) userMsg = error.response.data.message
+        else if (error.toString() !== '') userMsg = error.toString()
+    }
+
+    // switch errCode
+    switch (errorCode) {
+        case 'NOT_GRANTED_CALL' :
+            userMsg = `${userMsg} -> logout and (re)login to update your token`
+            break
+        case 'NOT_CREDENTIAL':
+            userMsg = `${userMsg} anymore -> logout and (re)login to get a new token`
+            break
+        default:
+        // nothing
+    }
+
     store.dispatch(showSnackbar(userMsg, 'error'))
     return Promise.reject(error)
 })

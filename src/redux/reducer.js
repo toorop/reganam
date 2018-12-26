@@ -56,6 +56,7 @@ const rootReducer = (state = initialState, action) => {
             return {...state, region: action.region}
         case LOGOUT:
             user.reset()
+            sessionStorage.clear()
             return {...state, clientKey: ''}
         default:
             return state

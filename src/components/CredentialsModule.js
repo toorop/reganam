@@ -64,7 +64,7 @@ class CredentialsModule extends React.Component {
                 dialogIsOpen: false,
                 credentials: credentials
             })
-            this.props.showSnackbar(`Credential ${credentialId} deleted`, 'success')
+            this.props.showSnackbar(`Token ${credentialId} deleted`, 'success')
         } else {
             this.setState({
                 dialogIsOpen: false,

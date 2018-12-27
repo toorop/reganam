@@ -57,7 +57,7 @@ class CredentialsModule extends React.Component {
 
     handleDialogClose = async (credentialId) => {
         // delete credential
-        if (credentialId !== null) {
+        if (credentialId !== null  && typeof credentialId !== "object") {
             await deleteCredential(credentialId)
             const credentials = [...this.state.credentials].filter(Id => Id !== credentialId)
             this.setState({

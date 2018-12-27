@@ -8,7 +8,7 @@ import CircularProgress from '@material-ui/core/CircularProgress'
 import Typography from "@material-ui/core/es/Typography/Typography"
 import InfoIcon from '@material-ui/icons/Info'
 
-import {getAppInfo, getCredentialInfo} from '../ovh/api/me'
+import {getAppInfo, getCredentialInfo} from '../../ovh/api/me'
 
 
 const styles = theme => ({

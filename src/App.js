@@ -5,17 +5,23 @@ import {Provider} from 'react-redux'
 import store from './redux/store'
 
 import {BrowserRouter, Route, Switch} from "react-router-dom"
+import ProtectedRoute from "./components/ProtectedRoute"
 
 import Snackbar from './components/Snackbar'
+import DrawerMenu from './components/DrawerMenu'
 
 // screens
 import Notfound from '../src/containers/NotFound'
 import Home from '../src/containers/Home'
 
-import './App.css';
-import Loader from "./components/Loader"
-import Dashboard from "./containers/Dashboard"
-import ProtectedRoute from "./components/ProtectedRoute"
+
+import Loader from './components/Loader'
+import Dashboard from './modules/dashboard/Dashboard'
+import Module from './components/Module'
+import CredentialsModule from './modules/credentials/CredentialsModule'
+
+import './App.css'
+
 
 class App extends Component {
     render() {
@@ -24,10 +30,12 @@ class App extends Component {
                 <CssBaseline/>
                 <Loader/>
                 <Snackbar/>
+                <DrawerMenu/>
                 <BrowserRouter>
                     <Switch>
                         <Route exact path='/' component={Home}/>
-                        <ProtectedRoute path='/dashboard' component={Dashboard}/>
+                        <ProtectedRoute path='/dashboard' component={Module} module={Dashboard}/>
+                        <ProtectedRoute exact path='/credentials' component={Module} module={CredentialsModule}/>
                         <Route component={Notfound}/>
                     </Switch>
                 </BrowserRouter>

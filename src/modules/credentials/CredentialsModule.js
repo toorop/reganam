@@ -3,9 +3,9 @@ import {connect} from 'react-redux'
 import PropTypes from 'prop-types';
 import {withStyles} from '@material-ui/core/styles';
 
-import {hideLoader, showLoader, showSnackbar} from '../redux/actions'
+import {hideLoader, showLoader, showSnackbar} from '../../redux/actions'
 
-import {deleteCredential, getCredentials} from '../ovh/api/me'
+import {deleteCredential, getCredentials} from '../../ovh/api/me'
 import Credential from './Credential'
 import DialogDetails from './CredentialDialogDetails'
 

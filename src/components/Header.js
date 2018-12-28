@@ -2,7 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux'
 
-import {withStyles} from "@material-ui/core/styles"
+import {withStyles} from '@material-ui/core/styles'
 import AccountCircle from '@material-ui/icons/AccountCircle'
 import AppBar from '@material-ui/core/AppBar'
 import Toolbar from "@material-ui/core/es/Toolbar/Toolbar"
@@ -22,7 +22,7 @@ const mapDispatchToProps = {
 
 const styles = (theme) => ({
     appBar: {
-        flexGrow: 1
+        //flexGrow: 1,
     },
     grow: {
         flexGrow: 1

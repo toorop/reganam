@@ -1,14 +1,32 @@
 import React from 'react'
-import Header from "./Header"
+import {withStyles} from '@material-ui/core/styles'
+
+import Header from './Header'
+import Footer from './Footer'
+
+const styles = () => ({
+    root: {
+        display: 'flex',
+        minHeight: '100vh',
+        flexDirection: 'column'
+    },
+    module: {
+        flex: '1'
+    }
+
+})
 
 const Module = (props) => {
-    const {module: Module, ...rest} = props
+    const {module: Module, classes, ...rest} = props
     return (
-        <React.Fragment>
+        <div className={classes.root}>
             <Header/>
-            <Module {...rest}/>
-        </React.Fragment>
+            <main className={classes.module}>
+                <Module {...rest}/>
+            </main>
+            <Footer/>
+        </div>
     )
 }
 
-export default Module
+export default withStyles(styles)(Module)

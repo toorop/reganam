@@ -16,10 +16,12 @@ import Typography from '@material-ui/core/Typography'
 
 
 import {getNewClientToken} from '../ovh/auth'
+import Footer from "./Footer"
 
 const styles = theme => ({
     paper: {
         margin: theme.spacing.unit * 1,
+        marginTop: theme.spacing.unit * 2,
         padding: `${theme.spacing.unit * 2}px ${theme.spacing.unit * 3}px ${theme.spacing.unit * 3}px`,
         display: 'flex',
         flexDirection: 'column',
@@ -100,6 +102,7 @@ class Connect extends React.Component {
                         </Button>
                     </FormControl>
                 </Paper>
+                <Footer/>
             </React.Fragment>
         )
     }

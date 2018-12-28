@@ -100,7 +100,7 @@ class Home extends React.Component {
 
     render() {
         if (this.state.isLogged) {
-            return <Redirect to='/dashboard'/>
+            return <Redirect to='/credentials'/>
         }
         return (
             this.state.showConnect ? <Connect region={this.props.region}/> : null

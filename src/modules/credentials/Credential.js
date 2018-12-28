@@ -1,15 +1,13 @@
 import React from 'react'
 import {withStyles} from '@material-ui/core/styles'
 
-import IconButton from '@material-ui/core/IconButton'
 import TableRow from '@material-ui/core/TableRow'
 import TableCell from '@material-ui/core/TableCell'
 import CircularProgress from '@material-ui/core/CircularProgress'
 import Typography from "@material-ui/core/es/Typography/Typography"
-import InfoIcon from '@material-ui/icons/Info'
+import IconCheckCircleOutline from '@material-ui/icons/CheckCircleOutline'
 
 import {getAppInfo, getCredentialInfo} from '../../ovh/api/me'
-
 
 const styles = theme => ({
     root: {
@@ -19,6 +17,12 @@ const styles = theme => ({
         marginRight: theme.spacing.unit * 1,
         marginLeft: theme.spacing.unit * 1,
     },
+    row: {
+        '&:hover': {
+            cursor: 'pointer'
+        }
+    },
+
     iconButton: {
         fontSize: '30px'
     },
@@ -76,7 +80,6 @@ class Credential extends React.Component {
 
     render() {
         const {classes, openDialog} = this.props
-
         if (!this.state.initDone) {
             return (
                 <TableRow>
@@ -87,8 +90,10 @@ class Credential extends React.Component {
             )
         }
 
+        const isActive = this.state.info.expiration > Date.now()
         return (
-            <TableRow key={this.state.id}>
+            <TableRow key={this.state.id} className={classes.row} hover={true}
+                      onClick={() => openDialog(this.state.info)}>
                 <TableCell component="th" scope="row">
                     <Typography variant={'overline'}>
                         {this.state.info.applicationName}
@@ -96,9 +101,7 @@ class Credential extends React.Component {
                 </TableCell>
                 <TableCell>{this.state.info.creation.toLocaleString()}</TableCell>
                 <TableCell>
-                    <IconButton color="primary" aria-label="More info" className={classes.iconButton} onClick={() => openDialog(this.state.info)}>
-                        <InfoIcon className={classes.iconButton}/>
-                    </IconButton>
+                    <IconCheckCircleOutline color={isActive ? 'inherit' : 'disabled'} fontSize={'small'}/>
                 </TableCell>
             </TableRow>
 

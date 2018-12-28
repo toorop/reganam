@@ -3,7 +3,7 @@ import React from 'react'
 import {withStyles} from '@material-ui/core/styles'
 import Typography from "@material-ui/core/es/Typography/Typography"
 import grey from '@material-ui/core/colors/grey'
-import Grid from "@material-ui/core/es/Grid/Grid"
+
 
 const styles = (theme) => ({
     root: {

@@ -15,7 +15,10 @@ const ProtectedRoute = ({component: Component, isLogged, ...rest}) => {
             render={
                 (props) => isLogged === true
                     ? <Component {...props} {...rest}/>
-                    : <Redirect to='/'/>
+                    : <Redirect to={{
+                        pathname: '/',
+                        want: rest.path
+                    }}/>
             }
         />
     )

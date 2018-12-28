@@ -15,8 +15,9 @@ import TableBody from '@material-ui/core/TableBody'
 import TableRow from "@material-ui/core/TableRow"
 import TableCell from '@material-ui/core/TableCell'
 import TablePagination from '@material-ui/core/TablePagination'
-import Paper from "@material-ui/core/es/Paper/Paper"
-import Typography from "@material-ui/core/es/Typography/Typography"
+import Paper from "@material-ui/core/Paper/Paper"
+import Typography from '@material-ui/core/Typography/Typography'
+import HelpOutline from '@material-ui/icons/HelpOutline'
 
 const mapDispatchToProps = {
     hideLoader,
@@ -27,6 +28,12 @@ const mapDispatchToProps = {
 const styles = theme => ({
     title: {
         margin: theme.spacing.unit * 3
+    },
+    tips: {
+        display: 'flex',
+        alignItems:'center',
+        paddingLeft: theme.spacing.unit * 2,
+        marginBottom: theme.spacing.unit * 2,
     },
     paper: {
         overflowX: 'auto',
@@ -57,7 +64,7 @@ class CredentialsModule extends React.Component {
 
     handleDialogClose = async (credentialId) => {
         // delete credential
-        if (credentialId !== null  && typeof credentialId !== "object") {
+        if (credentialId !== null && typeof credentialId !== "object") {
             await deleteCredential(credentialId)
             const credentials = [...this.state.credentials].filter(Id => Id !== credentialId)
             this.setState({
@@ -100,16 +107,17 @@ class CredentialsModule extends React.Component {
                     onClose={this.handleDialogClose}
                     credentialInfo={this.state.dialogCredentialInfo}
                 />
-                <Typography className={classes.title} variant={'display1'} align={'center'}>API Credentials</Typography>
-
-
                 <Paper className={classes.paper} xs={12}>
+                    <Typography className={classes.title} variant={'display1'} align={'center'}>API
+                        Credentials</Typography>
+                    <Typography className={classes.tips} variant={'body2'}> <HelpOutline color={"primary"} fontSize={"default"}/> &nbsp;&nbsp;Click on a row to get details about a
+                            token.</Typography>
                     <Table>
                         <TableHead>
                             <TableRow>
                                 <TableCell>Application</TableCell>
                                 <TableCell>Creation</TableCell>
-                                <TableCell>Details</TableCell>
+                                <TableCell>Active</TableCell>
                             </TableRow>
                         </TableHead>
                         <TableBody>

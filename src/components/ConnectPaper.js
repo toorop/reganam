@@ -1,5 +1,5 @@
 import React from 'react'
-import { connect } from 'react-redux'
+import {connect} from 'react-redux'
 import PropTypes from 'prop-types';
 import {withStyles} from '@material-ui/core/styles';
 
@@ -13,7 +13,6 @@ import LockIcon from '@material-ui/icons/LockOutlined'
 import Paper from '@material-ui/core/Paper'
 import Select from '@material-ui/core/Select'
 import Typography from '@material-ui/core/Typography'
-
 
 import {getNewClientToken} from '../ovh/auth'
 import Footer from "./Footer"
@@ -40,9 +39,11 @@ const styles = theme => ({
     },
     formControl: {
         marginTop: theme.spacing.unit * 3,
+    },
+    disclaimer:{
+        marginTop: theme.spacing.unit
     }
 })
-
 
 const mapDispatchToProps = {
     showLoader,
@@ -101,6 +102,10 @@ class Connect extends React.Component {
                             SIGN IN
                         </Button>
                     </FormControl>
+                    <Typography className={classes.disclaimer} variant={"caption"}>
+                        As this app runs only in your browser and interact only with OVH API, we
+                        do not collect any personal data and we can't use yours tokens to interact with your OVH
+                        account.</Typography>
                 </Paper>
                 <Footer/>
             </React.Fragment>

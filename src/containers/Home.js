@@ -34,6 +34,7 @@ class Home extends React.Component {
     }
 
     async componentDidMount() {
+
         this.props.showLoader('Init in progress')
 
         // check for CK

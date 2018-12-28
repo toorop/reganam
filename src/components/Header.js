@@ -63,13 +63,13 @@ class Header extends React.Component {
     }
 
     render() {
-        const {classes} = this.props
+        const {classes, drawerOpen} = this.props
         const {anchorEl, firstName} = this.state
         const open = Boolean(this.state.anchorEl)
         return (
             <AppBar className={classes.appBar} position='static'>
                 <Toolbar>
-                    <IconButton className={classes.drawnerButton} color='inherit' aria-label='Menu'>
+                    <IconButton className={classes.drawnerButton} color='inherit' aria-label='Menu' onClick={drawerOpen}>
                         <MenuIcon/>
                     </IconButton>
                     <Typography className={classes.grow} variant='h6' color='inherit'>

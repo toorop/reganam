@@ -8,6 +8,7 @@ import ListItemIcon from '@material-ui/core/ListItemIcon'
 import ListItemText from '@material-ui/core/ListItemText'
 import LockIcon from '@material-ui/icons/Lock'
 import Receipt from '@material-ui/icons/Receipt'
+import FolderIcon from '@material-ui/icons/Folder'
 
 import Typography from '@material-ui/core/es/Typography/Typography'
 
@@ -24,16 +25,23 @@ const DrawerMenu = (props) => {
                     <Typography variant={'h6'} align={'center'}
                                 style={{marginTop: '1rem', marginBottom: '0.5rem'}}>Modules</Typography>
                     <List>
-                        <ListItem button key={'API'} onClick={() => onClose('credentials')}>
-                            <ListItemIcon><LockIcon/></ListItemIcon>
-                            <ListItemText primary='Credentials'/>
+                        <ListItem button key={'Billing'} onClick={() => onClose('billing')}>
+                            <ListItemIcon><Receipt/></ListItemIcon>
+                            <ListItemText primary='Billing'/>
                         </ListItem>
                     </List>
                     <Divider/>
                     <List>
-                        <ListItem button key={'Billing'} onClick={() => onClose('billing')}>
-                            <ListItemIcon><Receipt/></ListItemIcon>
-                            <ListItemText primary='Billing'/>
+                        <ListItem button key={'filebrowser'} onClick={() => onClose('fileBrowser')}>
+                            <ListItemIcon><FolderIcon/></ListItemIcon>
+                            <ListItemText primary='File Browser'/>
+                        </ListItem>
+                    </List>
+                    <Divider/>
+                    <List>
+                        <ListItem button key={'API'} onClick={() => onClose('credentials')}>
+                            <ListItemIcon><LockIcon/></ListItemIcon>
+                            <ListItemText primary='Credentials'/>
                         </ListItem>
                     </List>
                 </div>

@@ -47,6 +47,9 @@ class Module extends React.Component {
                 case 'billing':
                     this.setState({module: Todo})
                     break
+                case 'fileBrowser':
+                    this.setState({module: Todo})
+                    break
                 default:
             }
         }

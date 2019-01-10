@@ -22,7 +22,6 @@ const styles = theme => ({
             cursor: 'pointer'
         }
     },
-
     iconButton: {
         fontSize: '30px'
     },

@@ -8,7 +8,9 @@ import Footer from './Footer'
 import DrawerMenu from './DrawerMenu'
 
 import Todo from '../modules/todo/Todo'
+import Billing from '../modules/billing/Billing'
 import CredentialsModule from '../modules/credentials/CredentialsModule'
+
 
 const history = createBrowserHistory()
 
@@ -45,7 +47,7 @@ class Module extends React.Component {
                     this.setState({module: CredentialsModule})
                     break
                 case 'billing':
-                    this.setState({module: Todo})
+                    this.setState({module: Billing})
                     break
                 case 'fileBrowser':
                     this.setState({module: Todo})

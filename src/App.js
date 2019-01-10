@@ -17,11 +17,12 @@ import Home from '../src/containers/Home'
 
 import Loader from './components/Loader'
 import Dashboard from './modules/dashboard/Dashboard'
-import Todo from './modules/todo/Todo'
+//import Todo from './modules/todo/Todo'
 import Module from './components/Module'
 import CredentialsModule from './modules/credentials/CredentialsModule'
 
 import './App.css'
+import Billing from "./modules/billing/Billing"
 
 
 
@@ -36,7 +37,7 @@ class App extends Component {
                     <Switch>
                         <Route exact path='/' component={Home}/>
                         <ProtectedRoute path='/dashboard' component={Module} module={Dashboard}/>
-                        <ProtectedRoute exact path='/billing' component={Module} module={Todo}/>
+                        <ProtectedRoute exact path='/billing' component={Module} module={Billing}/>
                         <ProtectedRoute exact path='/credentials' component={Module} module={CredentialsModule}/>
                         <Route component={Notfound}/>
                     </Switch>

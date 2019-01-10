@@ -42,3 +42,18 @@ export const getAppInfo = async (credentialId) => {
     return appInfo
 }
 
+// Billing
+
+// get bills
+export const getBills = async (from, to) => {
+    from = encodeURI(new Date(from).toISOString())
+    to = encodeURI(new Date(to).toISOString())
+    const r = await client.get(`/me/bill?date.from=${from}&date.to=${to}`)
+    return r.data
+}
+
+// get bill
+export const getBill = async (id) =>{
+    const r = await client.get(`/me/bill/${id}`)
+    return r.data
+}

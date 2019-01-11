@@ -193,8 +193,8 @@ class Billing extends React.Component {
 
         try {
             let promises = chunks.map((chunk, i) => new Promise((resolve, reject) => {
-                    setTimeout(() => {
-                        chunk.map(async id => {
+                    setTimeout(async () => {
+                        let promises2 = chunk.map(async id => new Promise(async (resolve1) => {
                             // get detail (normally in cache)
                             // todo cache
                             const {pdfUrl} = await getBill(id)
@@ -208,7 +208,7 @@ class Billing extends React.Component {
                                 mode: "cors"
                             }).then(r => r.arrayBuffer())
 
-                            if (r.length===0){
+                            if (r.length === 0) {
                                 reject(`downloading ${id} failed (length==0)`)
                             }
 
@@ -222,11 +222,14 @@ class Billing extends React.Component {
                             //const request = objectStore;
 
                             nbBillsDownloaded++
-                            await this.props.showLoader(`downloading bills from OVH ${nbBillsDownloaded}/${nbBills}`)
+                            this.props.showLoader(`downloading bills from OVH ${nbBillsDownloaded}/${nbBills}`)
 
                             // resolve
-                            resolve()
-                        })
+                            resolve1()
+                        }))
+                        // resolve
+                        await Promise.all(promises2)
+                        resolve()
                     }, i * 3100)
                 }
             ))
@@ -252,11 +255,13 @@ class Billing extends React.Component {
                     reject(e)
                 }
                 const objectStore = transaction.objectStore("billspdf")
-                const request = objectStore.get(id);
+                const request = objectStore.get(id)
+
                 request.onerror = e => {
                     reject(e)
                 }
                 request.onsuccess = function (event) {
+                    // todo
                     folder.file(`${id}.pdf`, request.result)
                     resolve()
                 }

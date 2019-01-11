@@ -169,6 +169,7 @@ class Billing extends React.Component {
         try {
             let promises = this.state.billIds.map(id => new Promise((resolve, reject) => {
                 const request = db.transaction(["billspdf"], "readonly").objectStore("billspdf").get(id)
+
                 request.onsuccess = e => {
                     if (e.target.result === undefined) {
                         ip2fetch.push(id)
@@ -180,6 +181,7 @@ class Billing extends React.Component {
                 }
             }))
             await Promise.all(promises)
+            console.log("1")
         } catch (e) {
             this.props.hideLoader()
             this.props.showSnackbar('unable to check cache (indexDB). ' + e, 'error')
@@ -198,7 +200,7 @@ class Billing extends React.Component {
                             const {pdfUrl} = await getBill(id)
 
                             // get pdf and save each one in session storage
-                            const r = await fetch('http://127.0.0.1:8080/?u=' + encodeURIComponent(pdfUrl), {
+                            const r = await fetch('https://cors.ovh/?u=' + encodeURIComponent(pdfUrl), {
                                 headers: {
                                     Accept: 'application/pdf',
                                 },
@@ -206,26 +208,30 @@ class Billing extends React.Component {
                                 mode: "cors"
                             }).then(r => r.arrayBuffer())
 
+                            if (r.length===0){
+                                reject(`downloading ${id} failed (length==0)`)
+                            }
+
                             // save pdf in local storage
                             const transaction = db.transaction(["billspdf"], "readwrite")
                             transaction.onerror = e => {
                                 reject(e)
                             }
 
-                            transaction.objectStore("billspdf").add(r, id)
+                            await transaction.objectStore("billspdf").add(r, id)
                             //const request = objectStore;
 
                             nbBillsDownloaded++
-                            this.props.showLoader(`downloading bills from OVH ${nbBillsDownloaded}/${nbBills}`)
+                            await this.props.showLoader(`downloading bills from OVH ${nbBillsDownloaded}/${nbBills}`)
 
                             // resolve
                             resolve()
                         })
                     }, i * 3100)
-                    return null
                 }
             ))
             await Promise.all(promises)
+            this.props.hideLoader()
         } catch (e) {
             this.props.hideLoader()
             this.props.showSnackbar('download failed. ' + e, 'error')
@@ -255,7 +261,10 @@ class Billing extends React.Component {
                     resolve()
                 }
             }))
+
             await Promise.all(promises)
+
+            this.props.hideLoader()
 
             zip.generateAsync({type: "blob"}).then(content => {
                 const url = URL.createObjectURL(content)
@@ -263,13 +272,12 @@ class Billing extends React.Component {
                 fileLink.setAttribute('href', url)
                 fileLink.setAttribute('download', `${filename}.zip`)
                 if (document.createEvent) {
-                    const event = document.createEvent('MouseEvents');
-                    event.initEvent('click', true, true);
-                    fileLink.dispatchEvent(event);
+                    const event = document.createEvent('MouseEvents')
+                    event.initEvent('click', true, true)
+                    fileLink.dispatchEvent(event)
                 } else {
                     fileLink.click();
                 }
-                this.props.hideLoader()
             })
         } catch (e) {
             this.props.hideLoader()
@@ -328,11 +336,6 @@ class Billing extends React.Component {
                     </Button>
 
                 </Grid>
-                <Typography className={classes.tips} variant={'body2'}> <HelpOutline color={"primary"}
-                                                                                     fontSize={"default"}/> &nbsp;&nbsp;Click
-                    on a row to get details about a
-                    bill.</Typography>
-
 
                 <Table>
                     <TableHead>

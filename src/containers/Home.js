@@ -101,7 +101,7 @@ class Home extends React.Component {
 
     render() {
         if (this.state.isLogged) {
-            const want = this.props.location.want !== undefined ? this.props.location.want : '/credentials'
+            const want = this.props.location.want !== undefined ? this.props.location.want : '/billing'
             return <Redirect to={want}/>
         }
         // wanted URL

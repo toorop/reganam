@@ -125,7 +125,7 @@ class CredentialsModule extends React.Component {
                         </TableBody>
                     </Table>
                     <TablePagination
-                        rowsPerPageOptions={[5, 10, 25]}
+                        rowsPerPageOptions={[5, 10, 25, 50]}
                         component="div"
                         count={credentials.length}
                         rowsPerPage={rowsPerPage}

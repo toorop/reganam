@@ -355,7 +355,7 @@ class Billing extends React.Component {
                     </TableBody>
                 </Table>
                 <TablePagination
-                    rowsPerPageOptions={[5, 10, 25]}
+                    rowsPerPageOptions={[5, 10, 25, 50]}
                     component="div"
                     count={billIds.length}
                     rowsPerPage={rowsPerPage}

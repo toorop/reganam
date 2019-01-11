@@ -6,7 +6,6 @@ import JSZip from 'jszip'
 import {withStyles} from '@material-ui/core/styles'
 import Button from '@material-ui/core/Button'
 import Grid from '@material-ui/core/Grid'
-import HelpOutline from '@material-ui/icons/HelpOutline'
 import TableHead from '@material-ui/core/TableHead'
 import Table from '@material-ui/core/Table'
 import TableBody from '@material-ui/core/TableBody'
@@ -348,6 +347,7 @@ class Billing extends React.Component {
                             <TableCell>ID</TableCell>
                             <TableCell>Date</TableCell>
                             <TableCell>Price</TableCell>
+                            <TableCell>Download</TableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>

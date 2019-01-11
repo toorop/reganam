@@ -53,7 +53,13 @@ export const getBills = async (from, to) => {
 }
 
 // get bill
-export const getBill = async (id) =>{
-    const r = await client.get(`/me/bill/${id}`)
-    return r.data
+export const getBill = async (id) => {
+    const key = 'billinfo-' + id
+    let billInfo = cacheGet(key)
+    if (billInfo === null) {
+        const r = await client.get(`/me/bill/${id}`)
+        billInfo = r.data
+        cacheSet(key, billInfo)
+    }
+    return billInfo
 }

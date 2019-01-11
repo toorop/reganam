@@ -6,6 +6,7 @@ import TableRow from "@material-ui/core/TableRow/TableRow"
 import TableCell from "@material-ui/core/TableCell/TableCell"
 import CircularProgress from "@material-ui/core/CircularProgress/CircularProgress"
 import Typography from "@material-ui/core/es/Typography/Typography"
+import CloudDownloadIcon from '@material-ui/icons/CloudDownload'
 
 const styles = theme => ({
     root: {
@@ -15,10 +16,8 @@ const styles = theme => ({
         marginRight: theme.spacing.unit * 1,
         marginLeft: theme.spacing.unit * 1,
     },
-    row: {
-        '&:hover': {
-            cursor: 'pointer'
-        }
+    link: {
+       color: 'inherit'
     },
     iconButton: {
         fontSize: '30px'
@@ -64,7 +63,6 @@ class BillRow extends React.Component {
         }
 
         const date = new Date(this.state.info.date)
-
         return (
             <TableRow key={this.state.id} className={classes.row} hover={true}>
                 <TableCell component="th" scope="row">
@@ -73,7 +71,8 @@ class BillRow extends React.Component {
                     </Typography>
                 </TableCell>
                 <TableCell>{date.toLocaleString()}</TableCell>
-                <TableCell>{this.state.info.priceWithTax.text}                </TableCell>
+                <TableCell>{this.state.info.priceWithTax.text}</TableCell>
+                <TableCell><a className={classes.link} href={this.state.info.pdfUrl}><CloudDownloadIcon/></a></TableCell>
             </TableRow>
         )
     }

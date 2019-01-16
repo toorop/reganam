@@ -168,7 +168,6 @@ class Billing extends React.Component {
         try {
             let promises = this.state.billIds.map(id => new Promise((resolve, reject) => {
                 const request = db.transaction(["billspdf"], "readonly").objectStore("billspdf").get(id)
-
                 request.onsuccess = e => {
                     if (e.target.result === undefined) {
                         ip2fetch.push(id)
@@ -180,7 +179,6 @@ class Billing extends React.Component {
                 }
             }))
             await Promise.all(promises)
-            console.log("1")
         } catch (e) {
             this.props.hideLoader()
             this.props.showSnackbar('unable to check cache (indexDB). ' + e, 'error')

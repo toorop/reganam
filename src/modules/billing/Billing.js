@@ -1,9 +1,9 @@
 import React from 'react'
-import {connect} from 'react-redux'
+import { connect } from 'react-redux'
 
 import JSZip from 'jszip'
 
-import {withStyles} from '@material-ui/core/styles'
+import { withStyles } from '@material-ui/core/styles'
 import Button from '@material-ui/core/Button'
 import Grid from '@material-ui/core/Grid'
 import TableHead from '@material-ui/core/TableHead'
@@ -16,9 +16,9 @@ import Paper from "@material-ui/core/Paper/Paper"
 import Typography from '@material-ui/core/Typography/Typography'
 import TextField from '@material-ui/core/TextField'
 
-import {hideLoader, showLoader, showSnackbar} from '../../redux/actions'
+import { hideLoader, showLoader, showSnackbar } from '../../redux/actions'
 import BillRow from './BillRow'
-import {getBill, getBills} from '../../ovh/api/me'
+import { getBill, getBills } from '../../ovh/api/me'
 
 // indexDB
 // indexDB
@@ -114,14 +114,14 @@ class Billing extends React.Component {
                 this.props.showSnackbar('From date must be before To date 😝', 'error')
                 return
             }
-            await this.setState({dateFrom: d})
+            await this.setState({ dateFrom: d })
 
         } else {
             if (d < this.state.dateFrom) {
                 this.props.showSnackbar('To date must be after From date 😝', 'error')
                 return
             }
-            await this.setState({dateTo: d})
+            await this.setState({ dateTo: d })
         }
         const billIds = await getBills(this.state.dateFrom.getTime(), this.state.dateTo.getTime())
         this.setState({
@@ -190,45 +190,45 @@ class Billing extends React.Component {
 
         try {
             let promises = chunks.map((chunk, i) => new Promise((resolve, reject) => {
-                    setTimeout(async () => {
-                        let promises2 = chunk.map(async id => new Promise(async (resolve1) => {
-                            // get detail (normally in cache)
-                            // todo cache
-                            const {pdfUrl} = await getBill(id)
+                setTimeout(async () => {
+                    let promises2 = chunk.map(async id => new Promise(async (resolve1) => {
+                        // get detail (normally in cache)
+                        // todo cache
+                        const { pdfUrl } = await getBill(id)
 
-                            // get pdf and save each one in session storage
-                            const r = await fetch('https://cors.ovh/?u=' + encodeURIComponent(pdfUrl), {
-                                headers: {
-                                    Accept: 'application/pdf',
-                                },
-                                responseType: 'arraybuffer',
-                                mode: "cors"
-                            }).then(r => r.arrayBuffer())
+                        // get pdf and save each one in session storage
+                        const r = await fetch('https://cors.dpp.st/?u=' + encodeURIComponent(pdfUrl), {
+                            headers: {
+                                Accept: 'application/pdf',
+                            },
+                            responseType: 'arraybuffer',
+                            mode: "cors"
+                        }).then(r => r.arrayBuffer())
 
-                            if (r.length === 0) {
-                                reject(`downloading ${id} failed (length==0)`)
-                            }
+                        if (r.length === 0) {
+                            reject(`downloading ${id} failed (length==0)`)
+                        }
 
-                            // save pdf in local storage
-                            const transaction = db.transaction(["billspdf"], "readwrite")
-                            transaction.onerror = e => {
-                                reject(e)
-                            }
+                        // save pdf in local storage
+                        const transaction = db.transaction(["billspdf"], "readwrite")
+                        transaction.onerror = e => {
+                            reject(e)
+                        }
 
-                            await transaction.objectStore("billspdf").add(r, id)
-                            //const request = objectStore;
+                        await transaction.objectStore("billspdf").add(r, id)
+                        //const request = objectStore;
 
-                            nbBillsDownloaded++
-                            this.props.showLoader(`downloading bills from OVH ${nbBillsDownloaded}/${nbBills}`)
+                        nbBillsDownloaded++
+                        this.props.showLoader(`downloading bills from OVH ${nbBillsDownloaded}/${nbBills}`)
 
-                            // resolve
-                            resolve1()
-                        }))
                         // resolve
-                        await Promise.all(promises2)
-                        resolve()
-                    }, i * 3100)
-                }
+                        resolve1()
+                    }))
+                    // resolve
+                    await Promise.all(promises2)
+                    resolve()
+                }, i * 3100)
+            }
             ))
             await Promise.all(promises)
             this.props.hideLoader()
@@ -268,7 +268,7 @@ class Billing extends React.Component {
 
             this.props.hideLoader()
 
-            zip.generateAsync({type: "blob"}).then(content => {
+            zip.generateAsync({ type: "blob" }).then(content => {
                 const url = URL.createObjectURL(content)
                 const fileLink = document.createElement('a')
                 fileLink.setAttribute('href', url)
@@ -288,19 +288,19 @@ class Billing extends React.Component {
     }
 
     handleChangePage = (e, page) => {
-        this.setState({page: page})
+        this.setState({ page: page })
     }
 
-    handleChangeRowsPerPage = e => this.setState({rowsPerPage: e.target.value})
+    handleChangeRowsPerPage = e => this.setState({ rowsPerPage: e.target.value })
 
     render() {
         if (!this.state.initDone) return null
 
-        const {classes} = this.props
-        const {billIds, page, rowsPerPage} = this.state
+        const { classes } = this.props
+        const { billIds, page, rowsPerPage } = this.state
         const start = page * rowsPerPage
         const billRows = [...billIds].slice(start, start + rowsPerPage)
-            .map(id => <BillRow key={id} id={id}/>)
+            .map(id => <BillRow key={id} id={id} />)
 
         return (
             <Paper className={classes.paper} xs={12}>
